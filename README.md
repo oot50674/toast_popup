@@ -78,4 +78,4 @@ Toast.setDefaults({ position: 'bottom-right', maxVisible: 4 });
 
 라이선스
 
-- 이 저장소에 별도 라이선스가 없다면 사내/개인 프로젝트 용으로 자유롭게 사용하세요.
+- MIT
