@@ -78,4 +78,4 @@ Toast.setDefaults({ position: 'bottom-right', maxVisible: 4 });
 
 라이선스
 
-- MIT
+- MIT license
