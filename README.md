@@ -1,6 +1,8 @@
-Toast Popup (Pure JS/CSS)
+Toast Popuphttps://docs.github.com/copilot/concepts/coding-agent/coding-agent
+<img width="916" height="501" alt="image" src="https://github.com/user-attachments/assets/f92179e2-4d8f-476f-8983-9a3aadce099e" />
 
-간단한 토스트 팝업 라이브러리입니다. 프레임워크 없이 순수 JS/CSS로 동작하며 info, alert, confirm 기능을 제공합니다. 기본 테마는 라이트(light)입니다.
+
+간단한 토스트 팝업 라이브러리입니다. 프레임워크 없이 순수 JS/CSS로 동작하며 info, alert, confirm 기능을 제공합니다.
 
 설치/사용
 
