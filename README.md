@@ -1,4 +1,5 @@
-<img width="916" height="501" alt="image" src="https://github.com/user-attachments/assets/f92179e2-4d8f-476f-8983-9a3aadce099e" />
+<img width="1269" height="621" alt="image" src="https://github.com/user-attachments/assets/0298ff48-dc17-45cc-9926-46233db1a483" />
+
 
 간단한 토스트 팝업 라이브러리입니다. 프레임워크 없이 순수 JS/CSS로 동작하며 info, alert, confirm 기능을 제공합니다.
 
