@@ -225,7 +225,7 @@
   }
 
   // 외부에서 사용할 API 객체
-  const API = {
+  const TOASTAPI = {
     /**
      * 라이브러리의 기본 옵션을 설정하거나 확장합니다.
      * @param {Partial<ToastOptions>} next - 덮어쓸 기본 옵션 객체.
@@ -290,6 +290,6 @@
 
   // 전역(window)에 API 노출
   if (typeof window !== 'undefined') {
-    window.Toast = API;
+    window.Toast = TOASTAPI;
   }
 })();
