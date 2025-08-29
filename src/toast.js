@@ -1,5 +1,32 @@
-// Toast Popup Library - Pure JS
+﻿// Toast Popup Library - Pure JS
 (function () {
+  /**
+   * @typedef {object} ToastOptions
+   * @property {string} [position='top-right'] - 토스트 팝업이 표시될 위치. 'top-right', 'top-left', 'bottom-right', 'bottom-left', 'top-center', 'bottom-center'
+   * @property {number|false} [duration=4000] - 토스트가 자동으로 사라지는 시간 (ms). 0 또는 false로 설정하면 자동으로 닫히지 않음.
+   * @property {boolean} [dismissible=true] - 닫기 버튼 표시 여부.
+   * @property {number} [maxVisible=5] - 한 위치에 동시에 표시될 수 있는 최대 토스트 개수.
+   * @property {string} [ariaLive='polite'] - 스크린 리더를 위한 aria-live 속성 값. 'polite', 'assertive'.
+   * @property {string} [title] - 토스트의 제목.
+   * @property {boolean} [focus=false] - 토스트 생성 시 포커스를 줄지 여부. (주로 confirm에서 사용)
+   * @property {Array<ToastAction>} [actions] - 사용자 정의 액션 버튼 배열.
+   */
+
+  /**
+   * @typedef {object} ToastAction
+   * @property {string} label - 버튼에 표시될 텍스트.
+   * @property {string} [className='secondary'] - 버튼에 적용할 CSS 클래스.
+   * @property {function(Event): void} onClick - 버튼 클릭 시 실행될 함수.
+   */
+
+  /**
+   * @typedef {ToastOptions} ConfirmToastOptions
+   * @property {function(): void} onConfirm - '확인' 버튼 클릭 시 실행될 콜백.
+   * @property {function(): void} [onCancel] - '취소' 버튼 클릭 시 실행될 콜백.
+   * @property {string} [okText='확인'] - '확인' 버튼의 텍스트.
+   * @property {string} [cancelText='취소'] - '취소' 버튼의 텍스트.
+   */
+
   // 기본 옵션 정의
   const DEFAULTS = {
     position: 'top-right', // 토스트 위치
@@ -199,11 +226,19 @@
 
   // 외부에서 사용할 API 객체
   const API = {
-    // 기본 옵션 변경
+    /**
+     * 라이브러리의 기본 옵션을 설정하거나 확장합니다.
+     * @param {Partial<ToastOptions>} next - 덮어쓸 기본 옵션 객체.
+     */
     setDefaults(next) {
       state.defaults = { ...state.defaults, ...(next || {}) };
     },
-    // 모든 토스트 또는 특정 위치 토스트 닫기
+
+    /**
+     * 화면에 표시된 모든 토스트를 지웁니다.
+     * 특정 위치의 토스트만 지울 수도 있습니다.
+     * @param {string} [position] - 지울 토스트의 위치. 지정하지 않으면 모든 토스트를 지웁니다.
+     */
     clear(position) {
       if (position) {
         const c = state.containers.get(position);
@@ -212,19 +247,39 @@
         state.containers.forEach(c => Array.from(c.children).forEach(hideToast));
       }
     },
-    // info 토스트
+
+    /**
+     * 정보(info) 타입의 토스트를 표시합니다.
+     * @param {string|Node} message - 토스트에 표시할 메시지.
+     * @param {ToastOptions} [options={}] - 토스트에 대한 추가 옵션.
+     * @returns {{element: HTMLElement, close: function(): void}} 생성된 토스트 인스턴스.
+     */
     info(message, options = {}) {
       const { title = '정보', ...rest } = options;
       return makeToast({ type: 'info', title, message, options: rest });
     },
-    // alert 토스트
+
+    /**
+     * 경고(alert) 타입의 토스트를 표시합니다.
+     * @param {string|Node} message - 토스트에 표시할 메시지.
+     * @param {ToastOptions} [options={}] - 토스트에 대한 추가 옵션.
+     * @returns {{element: HTMLElement, close: function(): void}} 생성된 토스트 인스턴스.
+     */
     alert(message, options = {}) {
       const { title = '알림', ...rest } = options;
       // 알림은 assertive로 aria-live 설정
       rest.ariaLive = rest.ariaLive || 'assertive';
       return makeToast({ type: 'alert', title, message, options: rest });
     },
-    // confirm 토스트
+
+    /**
+     * 확인(confirm) 타입의 토스트를 표시합니다.
+     * @param {string|Node} message - 토스트에 표시할 메시지.
+     * @param {function(): void} onConfirm - '확인' 버튼을 눌렀을 때 실행될 콜백.
+     * @param {function(): void} [onCancel] - '취소' 버튼을 눌렀을 때 실행될 콜백.
+     * @param {ConfirmToastOptions} [options={}] - 토스트에 대한 추가 옵션.
+     * @returns {{element: HTMLElement, close: function(): void}} 생성된 토스트 인스턴스.
+     */
     confirm(message, onConfirm, onCancel, options = {}) {
       const { title = '확인', ...rest } = options;
       rest.onConfirm = onConfirm;
