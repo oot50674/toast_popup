@@ -11,12 +11,12 @@
 
   // 위치별 CSS 클래스 매핑
   const POS_CLASS = {
-    'top-right': 'toast-top-right',
-    'top-left': 'toast-top-left',
-    'bottom-right': 'toast-bottom-right',
-    'bottom-left': 'toast-bottom-left',
-    'top-center': 'toast-top-center',
-    'bottom-center': 'toast-bottom-center',
+    'top-right': 'tp-top-right',
+    'top-left': 'tp-top-left',
+    'bottom-right': 'tp-bottom-right',
+    'bottom-left': 'tp-bottom-left',
+    'top-center': 'tp-top-center',
+    'bottom-center': 'tp-bottom-center',
   };
 
   // 상태 관리 객체
@@ -30,7 +30,7 @@
     const pos = POS_CLASS[position] ? position : DEFAULTS.position;
     if (state.containers.has(pos)) return state.containers.get(pos);
     const el = document.createElement('div');
-    el.className = `toast-container ${POS_CLASS[pos]}`;
+    el.className = `tp-container ${POS_CLASS[pos]}`;
     el.dataset.position = pos;
     document.body.appendChild(el);
     state.containers.set(pos, el);
@@ -56,7 +56,7 @@
   function createButton(label, className, onClick) {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = `btn ${className || ''}`.trim();
+    btn.className = `tp-btn ${className || ''}`.trim();
     btn.textContent = label;
     if (typeof onClick === 'function') btn.addEventListener('click', onClick);
     return btn;
@@ -66,7 +66,7 @@
   function hideToast(el) {
     if (!el || el.__hiding) return;
     el.__hiding = true;
-    el.classList.add('hide');
+    el.classList.add('tp-hide');
     const remove = () => el.remove();
     el.addEventListener('animationend', remove, { once: true });
     // 애니메이션 이벤트 누락 대비 타임아웃
@@ -81,7 +81,7 @@
 
     // 토스트 요소 생성
     const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
+    toast.className = `tp-toast tp-${type}`;
     toast.setAttribute('role', type === 'alert' ? 'alert' : type === 'confirm' ? 'alertdialog' : 'status');
     toast.setAttribute('aria-live', opts.ariaLive);
     toast.tabIndex = -1;
@@ -89,20 +89,20 @@
     // 타이틀 영역
     if (title) {
       const t = document.createElement('div');
-      t.className = 'toast-title';
+      t.className = 'tp-title';
       t.textContent = title;
       toast.appendChild(t);
     } else {
       // 타이틀이 없을 때 레이아웃 유지를 위해 빈 div 추가
       const s = document.createElement('div');
-      s.className = 'toast-title';
+      s.className = 'tp-title';
       s.style.display = 'none';
       toast.appendChild(s);
     }
 
     // 메시지 영역
     const msg = document.createElement('div');
-    msg.className = 'toast-message';
+    msg.className = 'tp-message';
     if (typeof message === 'string') msg.textContent = message;
     else if (message instanceof Node) msg.appendChild(message);
     toast.appendChild(msg);
@@ -110,7 +110,7 @@
     // 닫기 버튼 (confirm 제외)
     if ((opts.dismissible || sticky) && type !== 'confirm') {
       const close = document.createElement('button');
-      close.className = 'toast-close';
+      close.className = 'tp-close';
       close.setAttribute('aria-label', '닫기');
       close.innerHTML = '\u2715';
       close.addEventListener('click', () => hideToast(toast));
@@ -119,7 +119,7 @@
 
     // 액션 버튼 영역
     const actions = document.createElement('div');
-    actions.className = 'toast-actions';
+    actions.className = 'tp-actions';
 
     let timer = null;
     let resolved = false;

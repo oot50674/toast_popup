@@ -16,6 +16,12 @@ HTML에 추가:
 <script src="src/toast.js"></script>
 ```
 
+CSS 충돌 방지
+
+- Bootstrap/Tailwind 같은 CSS 라이브러리와의 클래스 충돌을 피하기 위해 컴포넌트 클래스명을 `tp-*`로 네임스페이스했습니다. (예: 컨테이너 `tp-container`, 토스트 `tp-toast`, 버튼 `tp-btn` 등)
+- 기존의 일반적인 클래스명(`.toast`, `.btn`, `.hide` 등)을 사용하지 않으므로 프레임워크의 스타일이 오버라이드하지 않습니다.
+- 다크 테마 토글은 여전히 문서 루트에 `.theme-dark` 클래스를 추가하는 방식으로 동작합니다.
+
 기본 API
 
 - `Toast.info(message, options)`
