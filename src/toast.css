@@ -10,6 +10,13 @@
   --toast-border: 1px solid rgba(0,0,0,0.08);
   --toast-confirm-btn-width: 120px; /* equal width confirm buttons */
 
+  /* Motion tokens */
+  --toast-in-duration: 360ms;
+  --toast-out-duration: 260ms;
+  --toast-ease-out: cubic-bezier(.22,1,.36,1); /* standard material-ish */
+  --toast-ease-in: cubic-bezier(.4,0,1,1);
+  --toast-shift: 16px; /* base travel distance */
+
   /* Light theme (default) */
   --toast-bg: #ffffff;
   --toast-fg: #0f172a; /* slate-900 */
@@ -65,26 +72,67 @@
   align-items: start;
   pointer-events: auto; /* receive clicks */
   opacity: 0;
-  animation: toast-in 220ms ease forwards;
+  will-change: transform, opacity;
+  animation: toast-in var(--toast-in-duration) var(--toast-ease-out) forwards;
 }
 
 .toast.hide {
-  animation: toast-out 180ms ease forwards;
+  animation: toast-out var(--toast-out-duration) var(--toast-ease-in) forwards;
 }
 
 /* Base fallback (center fade) */
-@keyframes toast-in { from { opacity: 0; transform: translateY(6px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-@keyframes toast-out { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(4px) scale(0.98); } }
+@keyframes toast-in {
+  0%   { opacity: 0; transform: translateY(calc(var(--toast-shift) * 0.4)) scale(0.96); }
+  60%  { opacity: 1; transform: translateY(-2px) scale(1.01); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toast-out {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  35%  { opacity: 0.9; transform: translateY(-2px) scale(0.995); }
+  100% { opacity: 0; transform: translateY(calc(var(--toast-shift) * 0.25)) scale(0.98); }
+}
 
 /* Position-aware animations */
-@keyframes toast-in-right { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
-@keyframes toast-out-right { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(6px); } }
-@keyframes toast-in-left { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
-@keyframes toast-out-left { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(-6px); } }
-@keyframes toast-in-top { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes toast-out-top { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-6px); } }
-@keyframes toast-in-bottom { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes toast-out-bottom { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(6px); } }
+@keyframes toast-in-right {
+  0%   { opacity: 0; transform: translateX(var(--toast-shift)) scale(0.96); }
+  60%  { opacity: 1; transform: translateX(-2px) scale(1.01); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes toast-out-right {
+  0%   { opacity: 1; transform: translateX(0) scale(1); }
+  35%  { opacity: 0.9; transform: translateX(-2px) scale(0.995); }
+  100% { opacity: 0; transform: translateX(calc(var(--toast-shift) * 0.5)) scale(0.98); }
+}
+@keyframes toast-in-left {
+  0%   { opacity: 0; transform: translateX(calc(var(--toast-shift) * -1)) scale(0.96); }
+  60%  { opacity: 1; transform: translateX(2px) scale(1.01); }
+  100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes toast-out-left {
+  0%   { opacity: 1; transform: translateX(0) scale(1); }
+  35%  { opacity: 0.9; transform: translateX(2px) scale(0.995); }
+  100% { opacity: 0; transform: translateX(calc(var(--toast-shift) * -0.5)) scale(0.98); }
+}
+@keyframes toast-in-top {
+  0%   { opacity: 0; transform: translateY(calc(var(--toast-shift) * -1)) scale(0.96); }
+  60%  { opacity: 1; transform: translateY(2px) scale(1.01); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toast-out-top {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  35%  { opacity: 0.9; transform: translateY(2px) scale(0.995); }
+  100% { opacity: 0; transform: translateY(calc(var(--toast-shift) * -0.5)) scale(0.98); }
+}
+@keyframes toast-in-bottom {
+  0%   { opacity: 0; transform: translateY(var(--toast-shift)) scale(0.96); }
+  60%  { opacity: 1; transform: translateY(-2px) scale(1.01); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toast-out-bottom {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  35%  { opacity: 0.9; transform: translateY(-2px) scale(0.995); }
+  100% { opacity: 0; transform: translateY(calc(var(--toast-shift) * 0.5)) scale(0.98); }
+}
 
 /* Apply by container placement */
 .toast-top-right .toast, .toast-bottom-right .toast { animation-name: toast-in-right; }
@@ -179,17 +227,17 @@
 }
 
 /* Confirm YES (primary) - green */
-.toast.toast-confirm .btn.primary { background: transparent; color: #065f46; border: 1px solid #34d399; }
+.toast.toast-confirm .btn.primary { background: #e6fbf1; color: #065f46; border: 1px solid #34d399; }
 .toast.toast-confirm .btn.primary:hover { background: #d1fae5; }
 
 /* Confirm NO (secondary) - red */
-.toast.toast-confirm .btn.secondary { background: transparent; color: #991b1b; border: 1px solid #fca5a5; }
+.toast.toast-confirm .btn.secondary { background: #fff5f5; color: #991b1b; border: 1px solid #fca5a5; }
 .toast.toast-confirm .btn.secondary:hover { background: #fee2e2; }
 
 /* Dark theme variants */
-.theme-dark .toast.toast-confirm .btn.primary { background: transparent; color: #a7f3d0; border: 1px solid #34d399; }
-.theme-dark .toast.toast-confirm .btn.primary:hover { background: rgba(5,150,105,0.18); }
-.theme-dark .toast.toast-confirm .btn.secondary { background: transparent; color: #fecaca; border: 1px solid rgba(248,113,113,0.7); }
+.theme-dark .toast.toast-confirm .btn.primary { background: rgba(5,150,105,0.12); color: #a7f3d0; border: 1px solid #34d399; }
+.theme-dark .toast.toast-confirm .btn.primary:hover { background: rgba(5,150,105,0.22); }
+.theme-dark .toast.toast-confirm .btn.secondary { background: rgba(225,29,72,0.10); color: #fecaca; border: 1px solid rgba(248,113,113,0.7); }
 .theme-dark .toast.toast-confirm .btn.secondary:hover { background: rgba(225,29,72,0.18); }
 
 /* Reduce motion preference */
